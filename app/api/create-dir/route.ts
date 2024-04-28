@@ -25,7 +25,7 @@ export async function GET(request: Request) {
     console.log("--------+++---\n\n",fs.readdirSync(cwd));
     
     
-    const dirName = 'a';
+    const dirName = 'b';
     const fileName = 'page.tsx';
     const fileContent = fs.readFileSync(cwd+"/page.tsx");
     
