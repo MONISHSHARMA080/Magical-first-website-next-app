@@ -22,7 +22,8 @@ export async function GET(request: Request) {
     const cwd = process.cwd()+"/app";
     console.log("\n\n-----+++------");
     console.log(cwd+"/api");
-    console.log("--------+++---\n\n");
+    console.log("--------+++---\n\n",fs.readdirSync(cwd));
+    
     
     const dirName = 'a';
     const fileName = 'page.tsx';
