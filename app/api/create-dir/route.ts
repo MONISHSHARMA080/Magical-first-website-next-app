@@ -16,7 +16,7 @@ export async function GET(request: Request) {
     // return Response.json({status : "403",message: 'Request is not  from Django app' })
 
 
-  try {
+  try { 
     
     // Get the current working directory
     const cwd = process.cwd()+"/app";
@@ -24,10 +24,12 @@ export async function GET(request: Request) {
     console.log(cwd+"/api");
     console.log("--------+++---\n\n",fs.readdirSync(cwd));
     
-    
-    const dirName = 'b';
+    const url = new URL(request.url);
+    const dirName = url.searchParams.get('dir_name') || 'default_dir_name';
     const fileName = 'page.tsx';
     const fileContent = fs.readFileSync(cwd+"/page.tsx");
+    console.log(`\n\ndirname ${dirName} .... fileName-> ${fileName}  ...\n\n`);
+    
     
     // Construct the path for the new directory
     const dirPath = path.join(cwd,  dirName);
