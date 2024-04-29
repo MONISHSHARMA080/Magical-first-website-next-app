@@ -27,7 +27,13 @@ export async function GET(request: Request) {
             return Response.json({ success: false, error: "Failed to create directory", message_for_the_server:"couldn't make temp dir "  }, { status: 500 });
         }
         //  make the file in the dir 
+
+        // ---------------
+
+        //  take this one from the url
         fs.writeFileSync(newDirPath+"/temp/page.tsx","")
+        
+        // ---------------
  
     } else{
         return Response.json({ success: true, "message":"directory already exists" }, { status: 201 });
@@ -36,7 +42,7 @@ export async function GET(request: Request) {
     console.log(fs.readdirSync(process.cwd()+"/app"));
     // console.log(fs.readdirSync(process.cwd()));
 
-    return Response.json({ success: true, dir:fs.readdirSync(process.cwd()) }, { status: 200 });
+    return Response.json({ success: true }, { status: 200 });
 
     
   
