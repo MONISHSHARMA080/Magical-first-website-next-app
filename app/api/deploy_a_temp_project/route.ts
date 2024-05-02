@@ -52,7 +52,7 @@ export async function GET(request: Request) {
         return Response.json({ success: true, "message":"end" }, { status: 201 });
  
     } else{
-        return Response.json({ success: false, "message":"directory already exists" }, { status: 201 });
+        return Response.json({ success: false, "message":"directory does not exist exists" }, { status: 201 });
     }
 
     
