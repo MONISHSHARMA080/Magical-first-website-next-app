@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
         const body = await request.json();
         const {response_form_llm} = body ;
         react_component_from_llm = response_form_llm
-        console.log("react component -->",response_form_llm);
+        console.log("react component(response_form_llm) -->",response_form_llm);
         
         console.log("\n\n req json   -----> ", body,  );
     } catch (error) {
@@ -58,7 +58,10 @@ export async function POST(request: NextRequest) {
     
     // writing to the file in the temp dir 
     try {
-      fs.writeFileSync(page_file_in_temp_dir_of_username,react_component_from_llm)
+        console.log("\n\n --- from  the new api ---\n\n");
+        
+      fs.writeFileSync(page_file_in_temp_dir_of_username,'"use client" \n')
+      fs.appendFileSync(page_file_in_temp_dir_of_username,react_component_from_llm)
     } catch (error) {
         return NextResponse.json({ success: false, error: "error in writing to the file  ",response_for_the_server:"encountered a error while writing to the file" }, { status: 302 });
     }

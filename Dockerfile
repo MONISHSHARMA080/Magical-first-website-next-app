@@ -22,6 +22,7 @@
 # COPY --from=node-build /app/package.json ./package.json
 
 # EXPOSE 3000
+# EXPOSE 3333
 
 # VOLUME /app
 
@@ -41,20 +42,26 @@ VOLUME /app
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
+
+# RUN go build a.go
+
 # Install dependencies
 RUN npm install 
 
 # Copy the rest of the application code to the working directory
 COPY . .
+COPY a /app/a
 
 # Expose the port Next.js uses (usually 3000)
 EXPOSE 3000
+EXPOSE 3333
 
 # Set environment variable to run in development mode
 ENV NODE_ENV=development
 
 # Command to run the Next.js app in dev mode
-CMD ["npm", "run", "dev"]
+# CMD ["npm", "run", "build"]
+CMD /app/./a & npm run dev
 
 # docker build -t nextjs-docker .
 
