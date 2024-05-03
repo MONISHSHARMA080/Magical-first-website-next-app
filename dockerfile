@@ -2,7 +2,7 @@
 # FROM golang:1.22 AS go-build
 # WORKDIR /app
 # COPY . /app/.
-# RUN go build go.mod 
+# RUN go build a.go
 
 # # Build the Next.js app
 # FROM node:18 AS node-build
@@ -27,7 +27,11 @@
 # VOLUME /app
 
 # CMD ["npm", "run", "dev"]
-
+FROM golang:1.22 AS go-build
+WORKDIR /app
+VOLUME /app
+COPY a.go /app/.
+RUN go build a.go
 
 # Use the official Node.js image as base
 FROM node:latest
@@ -51,7 +55,7 @@ RUN npm install
 
 # Copy the rest of the application code to the working directory
 COPY . .
-COPY a /app/a
+# COPY a /app/a
 
 # Expose the port Next.js uses (usually 3000)
 EXPOSE 3000
