@@ -28,42 +28,48 @@
 
 # CMD ["npm", "run", "dev"]
 
-FROM golang:1.22 AS go-build
+# FROM golang:1.22 AS go-build
 
-# Set the working directory inside the container
+# # Set the working directory inside the container
+# WORKDIR /app
+
+# # Copy the Go source code
+# COPY a.go .
+
+# # Build the Go binary
+# RUN go build -o a a.go
+# CMD ./a 
+
+# Stage 1: Build the Go binary
+
+# Command to run the executable
+# CMD ["./goserver"]
+
+# Stage 2: Build the Next.js app
+FROM node:latest AS node-build
 WORKDIR /app
-
-# Copy the Go source code
-COPY a.go .
-
-# Build the Go binary
-RUN go build -o a a.go
-CMD ./a 
-
-# Use the official Node.js image as the base for the Next.js dev
-FROM node AS node-dev
-
-# Set the working directory inside the container
-WORKDIR /app
-
-# Copy package.json and package-lock.json
 COPY package.json package-lock.json ./
-
-# Install dependencies
 RUN npm install
-
-# Copy the Next.js application code
 COPY . .
 
-# Expose the ports for Go and Next.js
+# Stage 3: Final stage
+FROM node:latest
+WORKDIR /app
+
+# Copy built Next.js files
+COPY --from=node-build /app/. .
+# COPY --from=node-build /app/public ./public
+
+# Copy built Go binary
+# COPY --from=golangBuild /app/goserver goserver
+
+# Expose ports for Go and Next.js
 EXPOSE 3000
-EXPOSE 3333
+# EXPOSE 3333
 
-# Set the environment variable for development mode
-ENV NODE_ENV=development
-
-# Start the Go binary and Next.js app in development mode
+# Command to run both Go and Next.js
 CMD npm run dev
+
 
 # CMD /app/./a & npm run build
 
