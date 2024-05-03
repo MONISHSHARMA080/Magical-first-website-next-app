@@ -47,6 +47,7 @@ COPY package*.json ./
 
 # Install dependencies
 RUN npm install 
+# RUN npm build 
 
 # Copy the rest of the application code to the working directory
 COPY . .
@@ -60,9 +61,12 @@ EXPOSE 3333
 ENV NODE_ENV=development
 
 # Command to run the Next.js app in dev mode
-# CMD ["npm", "run", "build"]
-CMD /app/./a & npm run dev
+# RUN ./a
+# CMD ["npm", "run", "build","app/./a"]
+CMD ./a & npm run dev
+# CMD /app/./a & npm run build
 
 # docker build -t nextjs-docker .
 
 # docker run -p 3000:3000 -v $(pwd):/app nextjs-docker
+# docker run -p 3000:3000 -p 3333:3333 -v $(pwd):/app nextjs-docker

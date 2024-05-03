@@ -10,6 +10,7 @@ import (
 
 func getRoot(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("\n---got the request---\n")
+	fmt.Printf("\n------\n",)
 	io.WriteString(w, "This is my website!\n")
 }
 func getHello(w http.ResponseWriter, r *http.Request) {
