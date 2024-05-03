@@ -22,7 +22,7 @@ func getHello(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.HandleFunc("/", getRoot)
 	http.HandleFunc("/hello", getHello)
-
+	fmt.Printf("\n\n  ----------- go version running  -------------\n\n")
 	err := http.ListenAndServe(":3333", nil)
   if errors.Is(err, http.ErrServerClosed) {
 		fmt.Printf("server closed\n")
