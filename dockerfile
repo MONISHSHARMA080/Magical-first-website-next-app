@@ -27,50 +27,46 @@
 # VOLUME /app
 
 # CMD ["npm", "run", "dev"]
+
 FROM golang:1.22 AS go-build
-WORKDIR /app
-VOLUME /app
-COPY a.go /app/.
-RUN go build a.go
 
-# Use the official Node.js image as base
-FROM node:latest
-
-
-# Set working directory in the container
+# Set the working directory inside the container
 WORKDIR /app
 
-# Create a volume to persist the directory structure
-VOLUME /app
+# Copy the Go source code
+COPY a.go .
 
-# Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
+# Build the Go binary
+RUN go build -o a a.go
 
+# Use the official Node.js image as the base for the Next.js dev
+FROM node:18 AS node-dev
 
-# RUN go build a.go
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy package.json and package-lock.json
+COPY package.json package-lock.json ./
 
 # Install dependencies
-RUN npm install 
-# RUN npm build 
+RUN npm install
 
-# Copy the rest of the application code to the working directory
+# Copy the Next.js application code
 COPY . .
-# COPY a /app/a
 
-# Expose the port Next.js uses (usually 3000)
+# Expose the ports for Go and Next.js
 EXPOSE 3000
 EXPOSE 3333
 
-# Set environment variable to run in development mode
+# Set the environment variable for development mode
 ENV NODE_ENV=development
 
-# Command to run the Next.js app in dev mode
-# RUN ./a
-# CMD ["npm", "run", "build","app/./a"]
+# Start the Go binary and Next.js app in development mode
 CMD ./a & npm run dev
+
 # CMD /app/./a & npm run build
 
-# docker build -t nextjs-docker .
+# docker build -t nextjs-docker . ; docker run -p 3000:3000 -p 3333:3333 -v $(pwd):/app nextjs-docker
 
 # docker run -p 3000:3000 -v $(pwd):/app nextjs-docker
 # docker run -p 3000:3000 -p 3333:3333 -v $(pwd):/app nextjs-docker
