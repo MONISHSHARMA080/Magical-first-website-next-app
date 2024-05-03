@@ -41,7 +41,7 @@ RUN go build -o a a.go
 CMD ./a 
 
 # Use the official Node.js image as the base for the Next.js dev
-FROM node:18-alpine AS node-dev
+FROM node AS node-dev
 
 # Set the working directory inside the container
 WORKDIR /app
