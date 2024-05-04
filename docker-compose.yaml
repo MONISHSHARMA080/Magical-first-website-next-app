@@ -1,18 +1,11 @@
-# services:
-  # web:
-    # build: Dockerfile
-    # ports:
-      # - '3000:3000'
-      # - '3333:3333'
 services:
   go_app:
-    
     restart: always
     build:
       context: .
       dockerfile: Dockerfile.go_app
     ports:
-      - "3333:4696"
+      - "4696:4696"
   nextjs:
     restart: always
     build:
@@ -20,5 +13,3 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
-
-  
