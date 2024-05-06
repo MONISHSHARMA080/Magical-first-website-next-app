@@ -1,12 +1,8 @@
 "use client"
+import React from 'react'
 
-import TrialHomeComponent from "@/components/trial-home-component";
-
-
-
-const App = () => {
+export default function page() {
   return (
-    <TrialHomeComponent />
-  )}
-
-export default App;
+    <div>page</div>
+  )
+}

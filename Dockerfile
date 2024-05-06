@@ -1,24 +1,44 @@
 # Stage 2: Build the Next.js app
 # Use the official Node.js 14 image as a base
-FROM node:latest
+FROM node:22-alpine AS base
+# FROM node:latest AS base
 
-# Set the working directory in the container
+# Install dependencies only when needed
+FROM base AS deps
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 WORKDIR /app
 
-# Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
-
-# Install dependencies
+COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 RUN npm install
 
-# Copy the rest of the application code to the working directory
-COPY . .
+FROM base AS builder
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+# COPY . .
 
-# Expose the port that the Next.js app runs on
+
 EXPOSE 3000
 
-# Start the Next.js app in development mode
+ENV PORT 3000
+
 CMD ["npm", "run", "dev"]
+  
+# ----old project 
+# Copy package.json and package-lock.json to the working directory
+# COPY package*.json ./
+
+# # Install dependencies
+
+# # Copy the rest of the application code to the working directory
+# COPY . .
+# RUN npm install
+
+# # Expose the port that the Next.js app runs on
+# EXPOSE 3000
+
+# # Start the Next.js app in development mode
+# CMD ["npm", "run", "dev"]
 
 
 # docker build -t nextjs-docker . ; docker run -p 3000:3000 -p 3333:3333 -v $(pwd):/app nextjs-docker
